@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">宝可梦GO</string>  <!-- 左上角的名称 -->
+    <string name="test_text">测试文字</string>
+    <string name="test_button">测试按钮</string>
+    <string name="test_editText_hint">请输入账号</string>
+    <string name="ET_button">登录</string>
+    <string name="sprinkles">sprinkles</string>
+    <string name="cherry">cherry</string>
+    <string name="no_cherry">others</string>
+    <string name="image_description">我爱你</string>
+    <string name="btn1">发出通知</string>
+    <string name="btn2">取消通知</string>
+    <string name="dialog_button">显示对话框</string>
+    <string name="pop_button">弹窗</string>
+    <string name="sql_button">去SQLite界面</string>
+    <string name="hello_blank_fragment">空白fragment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+</resources>

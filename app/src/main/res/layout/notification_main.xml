@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_vertical|start"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- gravity是控制容器内部的对齐方式,layout_gravity是控制容器本身对齐方式 -->
+    <TableLayout
+        android:background="@color/teal_200"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_weight="5"
+        android:layout_height="0dp">
+        <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="这是表格布局"/>
+        <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="这是表格布局2"/>
+
+        <TableRow>
+
+            <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="这是表格布局中的row"/>
+
+            <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="这是表格布局中的row"
+                android:layout_marginLeft="10dp"/>
+
+        </TableRow>
+
+    </TableLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"/>
+    <LinearLayout
+        android:background="@color/teal_700"
+        android:layout_width="match_parent"
+        android:layout_weight="4"
+        android:layout_height="0dp"
+        android:gravity="center">
+
+        <ListView
+            android:id="@+id/myListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"/>
+    <LinearLayout
+        android:background="@color/teal_200"
+        android:layout_width="100dp"
+        android:layout_weight="3"
+        android:layout_height="0dp"/>
+
+</LinearLayout>
