@@ -125,10 +125,15 @@
         android:textStyle="bold"
         android:layout_gravity="center"/>
 
-    <fragment
-        android:name="com.example.empytdemo.BlankFragment01"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/fragment01"/>
+    <Button
+        android:layout_marginTop="30dp"
+        android:id="@+id/button_to_frag"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:text="打开frag"
+        android:onClick="openTestFragment"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"/>
 
 </LinearLayout>

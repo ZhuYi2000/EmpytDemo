@@ -3,22 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BlankFragment01"
     android:orientation="vertical"
+    tools:context=".TestFragmentActivity"
     android:gravity="center_horizontal">
-
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/fragment01_textview"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
         android:textSize="32sp"
-        android:text="@string/hello_blank_fragment" />
-
-    <Button
-        android:id="@+id/fragment01_btn"
-        android:layout_width="wrap_content"
-        android:text="how are you"
-        android:layout_height="40dp"/>
-
+        android:textStyle="bold"/>
+    <fragment
+        android:layout_marginTop="20dp"
+        android:name="com.example.empytdemo.BlankFragment01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragment01"/>
 </LinearLayout>

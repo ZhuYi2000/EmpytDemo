@@ -2,6 +2,7 @@ package com.example.empytdemo;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -116,4 +117,9 @@ public class TestSQLActivity extends FragmentActivity {
         });
     }
 
+    public void openTestFragment(View view) {
+        Intent frag_intent = new Intent(this,TestFragmentActivity.class);
+        startActivity(frag_intent);
+        Log.e("zhu","点击frag按钮");
+    }
 }
