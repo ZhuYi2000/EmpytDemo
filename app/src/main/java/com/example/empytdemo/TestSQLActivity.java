@@ -10,14 +10,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
-public class TestSQLActivity extends FragmentActivity {
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+
+public class TestSQLActivity extends AppCompatActivity {
 
     private EditText student_id;
     private EditText student_name;
@@ -25,6 +31,8 @@ public class TestSQLActivity extends FragmentActivity {
     private RadioGroup student_sex;
     private RadioButton checked_sex;
     private boolean radio_checked = false;
+
+    private EditText p_id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,5 +129,25 @@ public class TestSQLActivity extends FragmentActivity {
         Intent frag_intent = new Intent(this,TestFragmentActivity.class);
         startActivity(frag_intent);
         Log.e("zhu","点击frag按钮");
+    }
+
+    public void getUrlImage(View view) {
+        p_id = findViewById(R.id.p_id);
+        String id = p_id.getText().toString().trim();
+        if(id.length()==0){
+            id = "2";
+        }
+        String url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+id+".png";
+        ImageView imageView = findViewById(R.id.p_image);
+        //String url_0 = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/36.png";
+
+        RequestOptions options = new RequestOptions()
+                .skipMemoryCache(false)  //用内存缓存
+                .diskCacheStrategy(DiskCacheStrategy.ALL)//缓存所有图片(原图,转换图)
+                .fitCenter();   //fitCenter 缩放图片充满ImageView CenterInside大缩小原(图) CenterCrop大裁小扩充满ImageView  Center大裁(中间)小原
+
+        Glide.with(this).load(url).apply(options).thumbnail(Glide.with(imageView).load(R.drawable.loading)).into(imageView);
+
+
     }
 }

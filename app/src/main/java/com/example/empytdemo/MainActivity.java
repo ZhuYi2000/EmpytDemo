@@ -263,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
 
                     int number = 100;//获取ID为1-100的宝可梦的名字（顺序排列）
                     String res = getUrl("https://pokeapi.co/api/v2/pokemon/?limit="+number);
+                    //String useless = getUrl("https://pokeapi.co/api/v2/pokemon/1");
                     //Log.e("zhu",res);
 
                     long  middleTime = System.currentTimeMillis();

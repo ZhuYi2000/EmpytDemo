@@ -8,11 +8,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotificationActivity extends Activity {
+public class NotificationActivity extends AppCompatActivity {
 
     private List<Fruit> fruits = new ArrayList<>();  //数据集
 

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+//调用Fragment的Activity继承的父类不能使用Activity，要继承 FragmentActivity 或者 AppCompatActivity
 public class TestFragmentActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override

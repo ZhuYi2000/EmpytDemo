@@ -106,7 +106,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="点击测试okhttp"
+        android:text="点击测试okhttp(需连接VPN)"
         android:textSize="28sp"
         android:onClick="testGet"
         app:layout_constraintBottom_toBottomOf="parent"
