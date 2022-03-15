@@ -28,11 +28,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.stetho.Stetho;
+import com.example.empytdemo.enity.Pokemon;
+import com.example.empytdemo.remote.PokemonInfoService;
+import com.example.empytdemo.remote.IPokemonInfoService;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,6 +43,10 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,11 +60,19 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
 
+
+    private Retrofit retrofit;
+    private IPokemonInfoService infoService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Stetho.initializeWithDefaults(this);//  chrome调试数据库
+
+        //创建retrofit对象、service对象
+        retrofit = new Retrofit.Builder().baseUrl("https://pokeapi.co/api/v2/").build();
+        infoService = retrofit.create(IPokemonInfoService.class);
 
         TextView nameOfGame = findViewById(R.id.nameOfTest);  // 通过ID获取控件
         //nameOfGame.setText("宝可梦——GO");
@@ -143,6 +157,30 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"事件:点击返回键", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+        //onCreate方法中获取列表，但是adb调试有可能崩溃，重新连接一下手机就行
+
+        new Thread(){
+            @Override
+            public void run(){
+                super.run();
+                int offset = 100;
+                int limit = 50;
+                PokemonInfoService api_service = new PokemonInfoService("https://pokeapi.co/api/v2/");
+                List<String> p_name_list = new ArrayList<>();
+                p_name_list = api_service.getPokemonListAsync(offset,limit);
+
+                try {
+                    Thread.sleep(3000);//休眠3秒，等待异步数据加载完毕
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                for(int i=0;i<limit;i++){
+                    Log.e("zhu","ID:"+(i+offset+1)+",Name:"+p_name_list.get(i));
+                }
+            }
+        }.start();
     }
 
     //checkbox反射而来的事件
@@ -254,48 +292,77 @@ public class MainActivity extends AppCompatActivity {
 
     //点击事件
     public void testGet(View view) throws IOException {
-        //必须在子线程中使用
+        //子线程的目的是为了休眠一定的时间等待加载完毕
         new Thread(){
             @Override
-            public void run() {
+            public void run(){
+                super.run();
+                int p_number = 15;
+                PokemonInfoService api_service = new PokemonInfoService("https://pokeapi.co/api/v2/");
+                ArrayList<Pokemon> p_list = new ArrayList<Pokemon>();
+                for(int i=0;i<p_number;i++){
+                    Pokemon pokemon = api_service.getOnePokemonAsync(i+1);//ID不是从0开始的 是从1开始的
+                    p_list.add(pokemon);
+                }
                 try {
-                    long  startTime = System.currentTimeMillis();
-
-                    int number = 100;//获取ID为1-100的宝可梦的名字（顺序排列）
-                    String res = getUrl("https://pokeapi.co/api/v2/pokemon/?limit="+number);
-                    //String useless = getUrl("https://pokeapi.co/api/v2/pokemon/1");
-                    //Log.e("zhu",res);
-
-                    long  middleTime = System.currentTimeMillis();
-
-                    JSONObject res_json = new JSONObject(res);
-                    JSONArray raw_list = res_json.getJSONArray("results");
-                    List<String> p_name_list = new ArrayList<>();
-                    for(int i = 0; i < number; i++){
-                        JSONObject temp = raw_list.getJSONObject(i);
-                        String p_name = temp.get("name").toString();
-                        p_name_list.add(p_name);
-                        Log.e("zhu",p_name);
-                    }
-                    Log.e("zhu","长度为："+p_name_list.size());
-
-                    long  endTime = System.currentTimeMillis();
-                    Log.e("zhu","geturl时间"+(middleTime-startTime)+"ms");
-                    Log.e("zhu","总时间"+(endTime-startTime)+"ms");
-/*  geturl时间2850ms
-    总时间2860ms,基本上json的处理不耗时,主要需提高网络请求的性能（高并发）
-*/
-                    //String p_name = res_json.get("name").toString();
-
-                }catch (IOException | JSONException e){
+                    Thread.sleep(3000);//休眠3秒，等待异步数据加载完毕（15个宝可梦的数据VPN下肯定可以加载完毕）
+                    //不连接VPN的话就看网络质量了，建议休眠3秒的时间最多加载两个宝可梦的数据，即用户点击当前宝可梦再加载
+                } catch (Exception e) {
                     e.printStackTrace();
+                }
+
+                //打印数据
+                for(int i=0;i<p_number;i++){
+                    p_list.get(i).printAttr();
+                    Log.e("zhu","——————————————————————————");
                 }
             }
         }.start();
 
+
+        //必须在子线程中使用
+
+//        new Thread(){
+//            @Override
+//            public void run() {
+//                try {
+//                    long  startTime = System.currentTimeMillis();
+//
+//                    int number = 100;//获取ID为1-100的宝可梦的名字（顺序排列）
+//                    String res = getUrl("https://pokeapi.co/api/v2/pokemon/?limit="+number);
+//                    //String useless = getUrl("https://pokeapi.co/api/v2/pokemon/1");
+//                    //Log.e("zhu",res);
+//
+//                    long  middleTime = System.currentTimeMillis();
+//
+//                    JSONObject res_json = new JSONObject(res);
+//                    JSONArray raw_list = res_json.getJSONArray("results");
+//                    List<String> p_name_list = new ArrayList<>();
+//                    for(int i = 0; i < number; i++){
+//                        JSONObject temp = raw_list.getJSONObject(i);
+//                        String p_name = temp.get("name").toString();
+//                        p_name_list.add(p_name);
+//                        Log.e("zhu",p_name);
+//                    }
+//                    Log.e("zhu","长度为："+p_name_list.size());
+//
+//                    long  endTime = System.currentTimeMillis();
+//                    Log.e("zhu","geturl时间"+(middleTime-startTime)+"ms");
+//                    Log.e("zhu","总时间"+(endTime-startTime)+"ms");
+///*  geturl时间2850ms
+//    总时间2860ms,基本上json的处理不耗时,主要需提高网络请求的性能（高并发）
+//    补充：加入VPN后速度很快
+//*/
+//                    //String p_name = res_json.get("name").toString();
+//                }catch (IOException | JSONException e){
+//                    e.printStackTrace();
+//                }
+//            }
+//        }.start();
+
     }
 
-    //同步GET方法
+    //okhttp同步GET方法
     public String getUrl(String url) throws IOException {
         OkHttpClient client = new OkHttpClient();
         //创建一个request对象
@@ -307,6 +374,36 @@ public class MainActivity extends AppCompatActivity {
         try (Response response = client.newCall(request).execute()) {
             return response.body().string();
         }
+    }
+
+
+    //retrofit 异步GET方法
+    public void rfGet(int offset, int limit){
+        Call<ResponseBody> responseBodyCall = infoService.getPokemonList(offset,limit);
+        //enqueue发送异步请求
+        responseBodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                try {
+                    //Log.e("zhu","getAsync:"+response.body().string());
+                    JSONObject res_json = new JSONObject(response.body().string());
+                    JSONArray raw_list = res_json.getJSONArray("results");
+                    for(int i=0;i<limit;i++){
+                        JSONObject temp = raw_list.getJSONObject(i);
+                        String p_name = temp.get("name").toString();
+                        Log.e("zhu",p_name);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("zhu","getAsync:失败");
+            }
+        });
     }
 }
 

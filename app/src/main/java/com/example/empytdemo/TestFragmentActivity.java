@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 //调用Fragment的Activity继承的父类不能使用Activity，要继承 FragmentActivity 或者 AppCompatActivity
 public class TestFragmentActivity extends AppCompatActivity implements View.OnClickListener {
@@ -31,9 +32,22 @@ public class TestFragmentActivity extends AppCompatActivity implements View.OnCl
                 //以bundle的形式传递信息
                 Bundle bundle = new Bundle();
                 bundle.putString("testMessage","Activity到Fragment的信息传递");
-
                 BlankFragment01 bf01 = new BlankFragment01();
                 bf01.setArguments(bundle);//传递到fragment中
+
+                bf01.setFragmentCallback(new IFragmentCallback() {
+                    // 使用匿名内部类来创建接口对象，这里定义的方法会被fragment里面的setxxx方法接受到
+                    @Override
+                    public void sendMsgToActivity(String msg) {
+                        Toast.makeText(TestFragmentActivity.this,msg,Toast.LENGTH_SHORT).show();
+                        //这样，在fragment里面定义的msg就通过接口传递到了activity中
+                    }
+
+                    @Override
+                    public String getMsgFromActivity(String msg) {
+                        return "msg from activity";
+                    }
+                });
 
                 replaceFragment(bf01);//再动态创建这个fragment
                 break;
@@ -44,6 +58,7 @@ public class TestFragmentActivity extends AppCompatActivity implements View.OnCl
     }
 
     /*
+    * 动态切换fragment的方法
     * 1.创建一个待处理的fragment
     * 2.获取FragmentManager，一般通过getSupportFragmentManager()
     * 3.开启一个事务transaction，一般调用FragmentManager的beginTransaction();

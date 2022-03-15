@@ -21,5 +21,10 @@
         android:layout_width="wrap_content"
         android:text="how are you"
         android:layout_height="40dp"/>
+    <Button
+        android:id="@+id/fragment01_btn_2"
+        android:layout_width="wrap_content"
+        android:text="Test message"
+        android:layout_height="40dp"/>
 
 </LinearLayout>

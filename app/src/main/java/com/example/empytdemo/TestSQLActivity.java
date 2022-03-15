@@ -141,6 +141,7 @@ public class TestSQLActivity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.p_image);
         //String url_0 = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/36.png";
 
+        //设置动态的placeholder
         RequestOptions options = new RequestOptions()
                 .skipMemoryCache(false)  //用内存缓存
                 .diskCacheStrategy(DiskCacheStrategy.ALL)//缓存所有图片(原图,转换图)
